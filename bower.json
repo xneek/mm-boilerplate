@@ -1,0 +1,37 @@
+{
+  "name": "mm-boilerplate",
+  "description": "Boilerplate materialize",
+  "main": [
+    "dist/main.js",
+    "dist/main.css"
+  ],
+  "authors": [
+    "Nikolay Fedoseev <info@fednik.ru>"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "mobile",
+    "materialize",
+    "boilerplate"
+  ],
+  "homepage": "https://github.com/xneek/mm-boilerplate",
+  "moduleType": [
+    "globals"
+  ],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "src",
+    "bower_components"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/xneek/mm-boilerplate.git"
+  },
+  "dependencies": {
+    "crEl": "https://github.com/xneek/crEl.git",
+    "materialize": "~0.97.7",
+    "modules-xneek": "https://github.com/xneek/modules.git"
+  }
+}

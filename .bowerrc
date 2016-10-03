@@ -1,0 +1,4 @@
+{
+  "directory": "dist/lib/",
+  "proxy":"http://10.10.1.21:3128"
+}
