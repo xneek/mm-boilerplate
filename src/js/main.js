@@ -7,7 +7,7 @@ function Icon(name){
 };
 var app = {
 	title: crEl('span'),
-	menuToggler: crEl('a', {href:'javascript:void(0)', d:{activities:'slide-out'}}, new Icon('menu')),
+	menuToggler: crEl('a', {href:'javascript:void(0)', d:{activates:'slide-out'}}, new Icon('menu')),
 	menu: crEl('ul',{c:'side-nav', id:'slide-out'}),
 	setTitle: function(title){
 		document.title = title;
@@ -15,31 +15,76 @@ var app = {
 		app.title.appendChild(document.createTextNode(title));
 	}
 };
-(function(){
+
+		class SideNav {
+			
+		constructor(opts){
+	
+			this._toggler = crEl('a', {href:'javascript:void(0)', d:{activates:'slide-out'}}, new Icon('menu'));
+			this._list = crEl('ul',{c:'side-nav', id:'slide-out'});
+			this.el = this._toggler;
+			document.body.appendChild(this._list);
+			return this;
+		}
+		
+		init (opts = {menuWidth: 300, closeOnClick: true }) {
+			$(this._toggler).sideNav(opts)
+		}
+
+		show(){
+			$(this._toggler).sideNav('show');
+		}
+		hide(){
+			$(this._toggler).sideNav('hide');
+		}
+		
+		clear() {
+			this._list.innerHTML = '';
+		}
+		add(inner){
+			this._list.appendChild(inner);
+		}
+		addItem(inner, evclick){
+			this.add(crEl('li', crEl('a',{href:'javascript:void(0)', e:{click:evclick},c:'waves-effect'}, inner)));
+		}
+		addHeader(inner){
+			this.add(crEl('li', crEl('a',{c:'subheader'},inner)));
+		}		
+		addDivider(){
+			this.add(crEl('li', crEl('div',{c:'divider'})));
+		}
+		
+	}
+	
+	
+	let sideNav = new SideNav();
+	
 	function Navbar(){
-		return crEl('nav',
+		return crEl('div',{c:'navbar-fixed'},crEl('nav',
 			crEl('div',{c:'nav-wrapper'},
 				crEl('a',{href:'javascript:void(0)', c:'brand-logo'}, 
-					app.menuToggler,
+					sideNav.el,
 					app.title
 				)
 			)
-		)
+		))
 	}
 	
-	app.menu.appendChild(crEl('li',crEl('a',{href:'javascript:void(0)'},'Захватить мир')));
-	app.menu.appendChild(crEl('li',crEl('a',{href:'javascript:void(0)'},'Уйти спать')));
+
+	sideNav.addHeader('Ololo')
+	sideNav.addItem('link1', function(){alert(1)})
+	sideNav.addItem('Link2', function(){alert(2)})
+	sideNav.init();
 	
 	
-	$(app.menuToggler).sideNav({
-      menuWidth: 300, // Default is 240
-      edge: 'right', // Choose the horizontal origin
-      closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor
-    });
+
 	app.setTitle('Привет');
 	document.getElementById("main").innerHTML = "";
 	document.getElementById("main").appendChild(app.menu)
 	document.getElementById("main").appendChild(new Navbar())
-})()
+	
+		
+	
+
 
 
