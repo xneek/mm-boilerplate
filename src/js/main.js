@@ -1,76 +1,140 @@
-/**
-	* Сообщения выводимые пользователю (уведомления)
-	* Работает на основе плагина toastr
-	* {@link http://codeseven.github.io/toastr/demo.htm l toastr}
 
-	* @method app.msg
-	* @param {String} msg Текст сообщения
-	* @param {String} [options.type=info] Тип сообщения (по умолчанию info)
-	* @example
-	app.msg("Привет, Мир!"); // сообщение инфо
-	app.msg("Привет, Мир!","success"); // сообщение успех
-app.msg('ololo','danger').then(function(notify){
-notify.pct=0; setInterval( function(){ notify.pct += 1; notify.update({ 'message': '<strong>' + notify.pct +'%</strong> Your page has been saved!', 'progress': notify.pct}); }, 500)
-})
-	*/
+/**
+ * app root oject with basic propertirs
+ *@namespace app
+ * @class app
+ * @constructor
+*/
 
 window.addEventListener('load', function(e) {
    setTimeout(function() { window.scrollTo(0, 1); }, 1);
 }, false);
 
-function Icon(name){
-	return crEl('i',{c:'material-icons'},name);
-};
+
+
 var app = {
 	title: crEl('span'),
 	menuToggler: crEl('a', {href:'javascript:void(0)', d:{activates:'slide-out'}}, new Icon('menu')),
 	menu: crEl('ul',{c:'side-nav', id:'slide-out'}),
+	/**
+	* Установка заголовка окна
+	* @method app.setTitle
+	* @param {String} title Заголовок
+	* @example
+	app.setTitle('Авторизация')
+	*/
 	setTitle: function(title){
 		document.title = title;
 		app.title.innerHTML = null;
 		app.title.appendChild(document.createTextNode(title));
+	},
+	components:{}
+};
+
+
+
+/** Базовый класс для создания компонентов */
+class Component {
+	constructor(){
+		
+	}
+}
+
+/**
+ * Иконка
+ * @extends Component
+*/	
+class Icon extends Component{
+	/**
+	 * Создает иконку
+	 * 
+	 * @param {String} name - Имя иконки (Контент DOM элемента)
+	 * @param {String} с - Классы через пробел
+	 * @return {Node}
+	 **/
+	constructor(name, c){
+		super();
+		return crEl('i',{c:'material-icons' + (c?' '+c:'')},name);
 	}
 };
 
-		class SideNav {
-			
-		constructor(opts){
-	
-			this._toggler = crEl('a', {href:'javascript:void(0)', d:{activates:'slide-out'}}, new Icon('menu'));
-			this._list = crEl('ul',{c:'side-nav', id:'slide-out'});
-			this.el = this._toggler;
-			document.body.appendChild(this._list);
-			return this;
-		}
-		
-		init (opts = {menuWidth: 300, closeOnClick: true }) {
-			$(this._toggler).sideNav(opts)
-		}
 
-		show(){
-			$(this._toggler).sideNav('show');
-		}
-		hide(){
-			$(this._toggler).sideNav('hide');
-		}
-		
-		clear() {
-			this._list.innerHTML = '';
-		}
-		add(inner){
-			this._list.appendChild(inner);
-		}
-		addItem(inner, evclick){
-			this.add(crEl('li', crEl('a',{href:'javascript:void(0)', e:{click:evclick},c:'waves-effect'}, inner)));
-		}
-		addHeader(inner){
-			this.add(crEl('li', crEl('a',{c:'subheader'},inner)));
-		}		
-		addDivider(){
-			this.add(crEl('li', crEl('div',{c:'divider'})));
-		}
-		
+/**
+ * Выезжающее меню
+ * @extends Component
+ */	
+class SideNav extends Component {
+	/**
+	 * Создает выезжающее меню
+	 * @param {Object} opts - Опции
+	 * @return {Object}
+	 **/	
+	constructor(opts = {menuWidth: 300, closeOnClick: true }){
+		super();
+		this._toggler = crEl('a', {href:'javascript:void(0)', d:{activates:'slide-out'}}, new Icon('menu'));
+		this._list = crEl('ul',{c:'side-nav', id:'slide-out'});
+		this.el = this._toggler;
+		document.body.appendChild(this._list);
+		$(this._toggler).sideNav(opts)
+		return this;
 	}
+
+    /**
+     *  @type {Node}
+     */
+	get dom(){
+		return this.el;
+	}
+    /** Показать меню */
+	show(){
+		$(this._toggler).sideNav('show');
+	}
+	/** Скрыть меню */
+	hide(){
+		$(this._toggler).sideNav('hide');
+	}
+	
+	/** Очистить элементы меню */
+	clear() {
+		this._list.innerHTML = '';
+	}
+	
+    /**
+     * Добавить элемент в меню
+     * @param {Node} inner - DOM который добавляем.
+     */	
+	add(inner){
+		this._list.appendChild(inner);
+	}
+
+	
+    /**
+     * Добавить ссылку в меню
+     * @param {Node} inner - DOM или строка (текст ссылки)
+     * @param {Function} evclick - функция вызываемая по клику на ссылку
+     */	
+	addLink(inner, evclick){
+		this.add(crEl('li', crEl('a',{href:'javascript:void(0)', e:{click:evclick},c:'waves-effect'}, inner)));
+	}
+	
+	
+    /**
+     * Добавить заголовок в меню
+     * @param {Node} inner - DOM или Строка.
+     */	
+	addHeader(inner){
+		this.add(crEl('li', crEl('a',{c:'subheader'},inner)));
+	}
+
+	
+    /**
+     * Добавить разделитель в меню
+     */		
+	addDivider(){
+		this.add(crEl('li', crEl('div',{c:'divider'})));
+	}
+	
+}
 	
 	
 	let sideNav = new SideNav();
@@ -79,7 +143,7 @@ var app = {
 		return crEl('div',{c:'navbar-fixed'},crEl('nav',
 			crEl('div',{c:'nav-wrapper'},
 				crEl('a',{href:'javascript:void(0)', c:'brand-logo'}, 
-					sideNav.el,
+					sideNav.dom,
 					app.title
 				)
 			)
@@ -88,9 +152,9 @@ var app = {
 	
 
 	sideNav.addHeader('Ololo')
-	sideNav.addItem('link1', function(){alert(1)})
-	sideNav.addItem('Link2', function(){alert(2)})
-	sideNav.init();
+	sideNav.addLink('link1', function(){alert(1)})
+	sideNav.addLink('Link2', function(){alert(2)})
+
 	
 	
 
