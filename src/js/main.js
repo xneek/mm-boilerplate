@@ -1,3 +1,19 @@
+/**
+	* Сообщения выводимые пользователю (уведомления)
+	* Работает на основе плагина toastr
+	* {@link http://codeseven.github.io/toastr/demo.htm l toastr}
+
+	* @method app.msg
+	* @param {String} msg Текст сообщения
+	* @param {String} [options.type=info] Тип сообщения (по умолчанию info)
+	* @example
+	app.msg("Привет, Мир!"); // сообщение инфо
+	app.msg("Привет, Мир!","success"); // сообщение успех
+app.msg('ololo','danger').then(function(notify){
+notify.pct=0; setInterval( function(){ notify.pct += 1; notify.update({ 'message': '<strong>' + notify.pct +'%</strong> Your page has been saved!', 'progress': notify.pct}); }, 500)
+})
+	*/
+
 window.addEventListener('load', function(e) {
    setTimeout(function() { window.scrollTo(0, 1); }, 1);
 }, false);

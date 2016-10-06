@@ -1,0 +1,40 @@
+{
+   "tags":{
+      "allowUnknownTags":true
+   },
+   "source":{
+      "include":[
+         "src/js"
+      ],
+      "includePattern":".+\\.js(doc)?$",
+      "excludePattern":"(^|\\/|\\\\)_"
+   },
+   "plugins":[
+      "plugins/markdown"
+   ],
+   "templates":{
+    "logoFile": "http://fednik.ru/img/fednik_optimised_fff.svg",
+    "cleverLinks": false,
+    "monospaceLinks": false,
+    "dateFormat": "ddd MMM Do YYYY",
+    "outputSourceFiles": true,
+    "outputSourcePath": true,
+    "systemName": "Документация",
+    "footer": "mm-boilerplate",
+    "copyright": "Nikolay Fedoseev",
+    "navType": "vertical",
+    "theme": "cerulean",
+    "linenums": true,
+    "collapseSymbols": false,
+    "inverseNav": true,
+    "protocol": "html://",
+    "methodHeadingReturns": false 
+   },
+   "opts":{
+      "destination":"./docs",
+      "encoding":"utf8",
+      "private":true,
+      "recurse":true,
+	  "config":""
+   }
+}

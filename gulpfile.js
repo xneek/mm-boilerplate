@@ -6,11 +6,18 @@ const less = require('gulp-less');
 const sourcemaps = require('gulp-sourcemaps');
 const cleanCSS = require('gulp-clean-css');
 const plumber = require('gulp-plumber');
-
+var  jsdoc = require('gulp-jsdoc3');
 const LessAutoprefix = require('less-plugin-autoprefix');
 const autoprefix = new LessAutoprefix({ browsers: ['last 2 versions'] });
  
+gulp.task('doc', function (cb) {
+	var config = require('./jsdoc.json');
+	gulp.src(['src/**/*.js'], {read: false})
+	.pipe(jsdoc(config, cb));
 
+	
+});
+ 
 gulp.task('es6', function(){
     return gulp.src('src/js/*.js')
 	.pipe(plumber())
